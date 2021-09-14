@@ -24,8 +24,11 @@ cmd "syntax on"
 -- cmd "colorscheme everforest"
 --[[ require('rose-pine').set()
 vim.g.rose_pine_variant = 'moon' ]]
-local base16 = require "base16"
-base16(base16.themes["eighties"], true)
+--[[ local base16 = require "base16"
+base16(base16.themes["eighties"], true) ]]
+
+local catppuccino = require("catppuccino")
+catppuccino.load("dark_catppuccino")
 
 --[[ g.material_style = 'palenight'
 g.material_contrast = false

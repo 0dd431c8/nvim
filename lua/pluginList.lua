@@ -15,6 +15,7 @@ return require("packer").startup(
         use "sainnhe/sonokai"
         use 'marko-cerovac/material.nvim'
         use({ 'rose-pine/neovim', as = 'rose-pine' })
+        use 'Pocco81/Catppuccino.nvim'
 
         -- lang stuff
         use "nvim-treesitter/nvim-treesitter"
@@ -28,6 +29,7 @@ return require("packer").startup(
         use "kabouzeid/nvim-lspinstall"
         use "folke/lsp-colors.nvim"
         use "folke/trouble.nvim"
+        use "glepnir/lspsaga.nvim"
 
         use "lewis6991/gitsigns.nvim"
         use "akinsho/nvim-bufferline.lua"

@@ -40,22 +40,22 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      "solidity_ls",
+      -- "solidity_ls",
       -- "pyright"
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
-      solidity_ls = {
-        settings = {
-          solidity = {
-            defaultCompiler = "remote",
-            -- compileUsingLocalVersion = "/opt/homebrew/bin/solcjs",
-            compileUsingRemoteVersion = "0.8.19",
-          },
-        },
-      },
+      -- solidity_ls = {
+      --   settings = {
+      --     solidity = {
+      --       defaultCompiler = "remote",
+      --       -- compileUsingLocalVersion = "/opt/homebrew/bin/solcjs",
+      --       compileUsingRemoteVersion = "0.8.19",
+      --     },
+      --   },
+      -- },
     },
     -- customize how language servers are attached
     handlers = {

@@ -6,5 +6,6 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.colorscheme.catppuccin" },
+  { import = "astrocommunity.colorscheme.aurora" },
   -- import/override with your plugins folder
 }

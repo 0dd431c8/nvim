@@ -6,9 +6,9 @@
 
 -- Set up custom filetypes
 vim.filetype.add {
-  extension = {
-    ral = "rust",
-  },
+  -- extension = {
+  --   ral = "rust",
+  -- },
   -- filename = {
   --   ["Foofile"] = "fooscript",
   -- },

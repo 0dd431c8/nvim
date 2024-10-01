@@ -19,6 +19,9 @@ require("lazy").setup({
   ui = { backdrop = 100 },
   performance = {
     rtp = {
+      paths = {
+        vim.fn.stdpath "data" .. "/lazy/ralph-lsp/plugin-nvim",
+      },
       -- disable some rtp plugins, add more to your liking
       disabled_plugins = {
         "gzip",

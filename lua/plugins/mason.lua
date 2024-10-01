@@ -14,7 +14,7 @@ return {
         "lua_ls",
         "solidity_ls",
         "tailwindcss",
-        "tsserver",
+        "ts_ls",
         -- add more arguments for adding more language servers
       })
     end,
@@ -27,8 +27,9 @@ return {
       -- add more things to the ensure_installed table protecting against community packs modifying it
       opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
         "stylua",
-        "eslint_d",
-        "prettierd",
+        "biome",
+        -- "eslint_d",
+        -- "prettierd",
         -- add more arguments for adding more null-ls sources
       })
     end,

@@ -1,20 +1,31 @@
-local function pick_js_formatter(bufnr)
-  local dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":h")
-  if vim.fn.findfile("biome.json", dir .. ";") ~= "" then
-    return { "biome" }
+local function find_monorepo_root()
+  local dir = vim.fn.expand "%:p:h"
+  while dir ~= "/" do
+    if vim.fn.executable(dir .. "/node_modules/.bin/oxfmt") == 1 then
+      return dir
+    end
+    dir = vim.fn.fnamemodify(dir, ":h")
   end
-  return { "prettierd", "prettier", stop_after_first = true }
+  return nil
 end
 
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    css = pick_js_formatter,
-    html = pick_js_formatter,
-    typescript = pick_js_formatter,
-    typescriptreact = pick_js_formatter,
-    javascript = pick_js_formatter,
-    javascriptreact = pick_js_formatter,
+    css = { "oxfmt" },
+    html = { "oxfmt" },
+    json = { "oxfmt" },
+    jsonc = { "oxfmt" },
+    typescript = { "oxfmt" },
+    typescriptreact = { "oxfmt" },
+    javascript = { "oxfmt" },
+    javascriptreact = { "oxfmt" },
+  },
+
+  formatters = {
+    oxfmt = {
+      cwd = find_monorepo_root,
+    },
   },
 
   format_on_save = {

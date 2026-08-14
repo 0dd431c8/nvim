@@ -168,7 +168,7 @@ return {
   --   },
   -- },
   {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     lazy = false,
   },
   {
@@ -202,5 +202,37 @@ return {
       { "<leader>db", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
     },
     opts = {},
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufWritePost", "BufNewFile" },
+    config = function()
+      local lint = require "lint"
+
+      local function find_monorepo_root()
+        local dir = vim.fn.expand "%:p:h"
+        while dir ~= "/" do
+          if vim.fn.executable(dir .. "/node_modules/.bin/oxlint") == 1 then
+            return dir
+          end
+          dir = vim.fn.fnamemodify(dir, ":h")
+        end
+        return nil
+      end
+
+      lint.linters_by_ft = {
+        typescript = { "oxlint" },
+        typescriptreact = { "oxlint" },
+        javascript = { "oxlint" },
+        javascriptreact = { "oxlint" },
+      }
+
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
+        callback = function()
+          local root = find_monorepo_root()
+          lint.try_lint(nil, { cwd = root })
+        end,
+      })
+    end,
   },
 }

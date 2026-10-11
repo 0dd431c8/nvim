@@ -13,6 +13,7 @@ vim.diagnostic.config {
 }
 
 local servers = {
+  "gopls",
   "html",
   "cssls",
   "ts_ls",
@@ -20,5 +21,16 @@ local servers = {
   "solidity_ls_nomicfoundation",
   "prismals",
 }
+
+vim.lsp.config("gopls", {
+  settings = {
+    gopls = {
+      staticcheck = true,
+      analyses = {
+        unusedparams = true,
+      },
+    },
+  },
+})
 
 vim.lsp.enable(servers)

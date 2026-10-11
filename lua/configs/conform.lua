@@ -12,6 +12,7 @@ end
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
+    go = { "goimports", "gofmt" },
     css = { "oxfmt" },
     html = { "oxfmt" },
     json = { "oxfmt" },
@@ -28,10 +29,12 @@ local options = {
     },
   },
 
-  format_on_save = {
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
+  format_on_save = function(bufnr)
+    return {
+      timeout_ms = vim.bo[bufnr].filetype == "go" and 2000 or 500,
+      lsp_format = "fallback",
+    }
+  end,
 }
 
 return options

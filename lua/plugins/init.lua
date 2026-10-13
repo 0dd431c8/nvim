@@ -209,7 +209,7 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
-    event = { "BufReadPost", "BufWritePost", "BufNewFile" },
+    event = { "BufReadPre", "BufWritePost", "BufNewFile" },
     config = function()
       local lint = require "lint"
 
@@ -225,6 +225,7 @@ return {
       end
 
       lint.linters_by_ft = {
+        go = { "golangcilint" },
         typescript = { "oxlint" },
         typescriptreact = { "oxlint" },
         javascript = { "oxlint" },
@@ -232,7 +233,15 @@ return {
       }
 
       vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
-        callback = function()
+        group = vim.api.nvim_create_augroup("NvimLint", { clear = true }),
+        callback = function(args)
+          if vim.bo.filetype == "go" then
+            -- This linter reads saved packages; avoid running it on InsertLeave.
+            if args.event ~= "InsertLeave" then
+              require("configs.go").lint()
+            end
+            return
+          end
           local root = find_monorepo_root()
           lint.try_lint(nil, { cwd = root })
         end,

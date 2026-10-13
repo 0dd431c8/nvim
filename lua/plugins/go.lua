@@ -12,7 +12,7 @@ return {
     cmd = { "MasonToolsInstall", "MasonToolsInstallSync", "MasonToolsUpdate", "MasonToolsUpdateSync" },
     dependencies = { "mason-org/mason.nvim" },
     opts = {
-      ensure_installed = { "gopls", "goimports" },
+      ensure_installed = { "gopls", "goimports", "golangci-lint" },
       auto_update = false,
       run_on_start = true,
     },

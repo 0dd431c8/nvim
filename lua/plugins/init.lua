@@ -213,13 +213,12 @@ return {
     config = function()
       local lint = require "lint"
 
-      local function find_monorepo_root()
-        local dir = vim.fn.expand "%:p:h"
-        while dir ~= "/" do
+      local function find_monorepo_root(bufnr)
+        -- The iterator stops at the root, even for names that are not file paths.
+        for dir in vim.fs.parents(vim.api.nvim_buf_get_name(bufnr)) do
           if vim.fn.executable(dir .. "/node_modules/.bin/oxlint") == 1 then
             return dir
           end
-          dir = vim.fn.fnamemodify(dir, ":h")
         end
         return nil
       end
@@ -235,14 +234,18 @@ return {
       vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
         group = vim.api.nvim_create_augroup("NvimLint", { clear = true }),
         callback = function(args)
-          if vim.bo.filetype == "go" then
+          local filetype = vim.bo[args.buf].filetype
+          if vim.bo[args.buf].buftype ~= "" or not lint.linters_by_ft[filetype] then
+            return
+          end
+          if filetype == "go" then
             -- This linter reads saved packages; avoid running it on InsertLeave.
             if args.event ~= "InsertLeave" then
               require("configs.go").lint()
             end
             return
           end
-          local root = find_monorepo_root()
+          local root = find_monorepo_root(args.buf)
           lint.try_lint(nil, { cwd = root })
         end,
       })

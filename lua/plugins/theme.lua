@@ -17,6 +17,9 @@ return {
         booleans = { "bold" },
       },
       integrations = {
+        rainbow_delimiters = true,
+        nvimtree = true,
+        telescope = { enabled = true },
         blink_cmp = { style = "bordered" },
         lualine = {
           mocha = function(colors)

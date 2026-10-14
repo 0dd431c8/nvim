@@ -36,7 +36,7 @@ opt.termguicolors = true
 opt.signcolumn = "yes"
 opt.wrap = false -- Prose filetypes enable wrapping in after/ftplugin/.
 opt.list = true
-opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+opt.listchars:append({ tab = "  " }) -- Keep tabs blank outside the active indent guide.
 
 -- Keep native defaults for EditorConfig, showmode, swapfile, hidden,
 -- autoread, autoindent, and incsearch.

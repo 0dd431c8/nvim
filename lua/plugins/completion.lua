@@ -4,6 +4,7 @@ return {
     version = "1.*",
     event = "InsertEnter",
     dependencies = {
+      "windwp/nvim-autopairs", -- Load pair mappings before Blink captures its fallbacks.
       { "xzbdmw/colorful-menu.nvim", opts = {} },
     },
     opts = {

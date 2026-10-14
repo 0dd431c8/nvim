@@ -27,10 +27,16 @@ lua/config/lsp.lua         Native LSP integration, diagnostics, attach mappings
 lua/config/mason.lua       Installation helper for non-LSP tools
 lua/config/treesitter.lua  Parser installation and native highlighting
 lua/config/root.lua        Navigation root helper
+lua/config/rainbow.lua     Shared rainbow color cycle
+lua/config/statusline.lua  Search count and macro recording indicators
 lua/plugins/lsp.lua        LSP servers, Mason, and mason-lspconfig
 lua/plugins/completion.lua Blink completion
+lua/plugins/editing.lua    Automatic pairing and rainbow bracket highlighting
 lua/plugins/treesitter.lua Parser selection
-lua/plugins/snacks.lua     Picker, explorer, and LazyGit
+lua/plugins/indent.lua     Blink indent guides and scope highlighting
+lua/plugins/telescope.lua  Telescope pickers and native FZF sorting
+lua/plugins/explorer.lua   nvim-tree sidebar and directory handling
+lua/plugins/lazygit.lua    LazyGit floating terminal
 lua/plugins/formatting.lua Conform formatters and save behavior
 lua/plugins/git.lua        Gitsigns and buffer-local hunk mappings
 lua/plugins/ui.lua         Lualine, which-key, and file icons
@@ -85,10 +91,18 @@ indentation is disabled; native filetype indentation and manual folding remain.
 - Absolute and relative line numbers, two-space fallback indentation, persistent
   undo, and confirmation when an operation encounters unsaved changes.
 - Tab and Backspace follow the indentation width; shifts round to that width.
+- blink.indent shows a thin (`▏`) rainbow guide only for the scope containing the cursor,
+  hiding guides outside that scope. It uses indentation
+  rather than Treesitter and updates immediately without animation.
+- Rainbow delimiters colors nested bracket pairs using Treesitter. Brackets and
+  indent guides share a seven-color cycle: red, peach, yellow, green, blue, mauve, teal.
+- nvim-autopairs closes brackets and quotes, skips existing closing characters,
+  deletes empty pairs with Backspace, and splits pairs across lines with Enter.
+  Treesitter checks provide syntax context; pairing is disabled in picker prompts.
 - Case-insensitive search unless the pattern contains uppercase letters.
 - New splits open below or to the right and preserve text placement where possible.
 - Cursor-line highlighting, four lines/eight columns of scrolling context, and
-  visible tabs, trailing spaces, and nonbreaking spaces.
+  visible trailing spaces and nonbreaking spaces. Tabs display as blank whitespace.
 - Mapping timeout is 500 ms. Which-key appears after 300 ms. The swap-write and
   `CursorHold` idle interval is 250 ms.
 - Code does not wrap. Text, Markdown, Git commits, plain TeX, and Typst wrap at
@@ -99,10 +113,14 @@ indentation is disabled; native filetype indentation and manual folding remain.
   Updates during insert mode and inlay hints are disabled initially.
 - Catppuccin Mocha supplies a solid dark background, colorful syntax and plugin UI,
   brighter lavender comments, bold keywords/functions/types, and terminal colors.
+- nvim-web-devicons supplies colored file icons for Telescope, nvim-tree,
+  lualine, and which-key.
 - Lualine shows mode, branch, changes, diagnostics, filename, filetype, and position
   in a global statusline; the duplicate built-in mode message is hidden after load.
   Its Mocha colors use a lavender normal-mode badge, maroon filename, flamingo
   position section, and a lighter `surface0` background inspired by the theme preview.
+  The middle shows search progress (`[2/14]`) while search highlights are active,
+  including while typing `/` or `?`, and `REC @a` while recording into register `a`.
 - The command line is hidden when idle, leaving no gap below lualine. Commands and
   messages remain available; partial-command text and the built-in ruler are hidden.
 - Ctrl-S saves the current buffer in normal, insert, visual, and select modes,
@@ -112,7 +130,8 @@ indentation is disabled; native filetype indentation and manual folding remain.
 
 Blink opens completion automatically without preselection or automatic insertion.
 Tab/Shift-Tab and `Ctrl-n/p` cycle candidates while the menu is open. Enter accepts
-the selected candidate, otherwise inserting a newline; `Ctrl-y` also accepts.
+the selected candidate, otherwise inserting a newline with autopairs handling;
+`Ctrl-y` also accepts.
 With the menu closed, Tab/Shift-Tab jump between native snippet fields or retain
 their usual editing behavior. `Ctrl-e` dismisses, and `Ctrl-Space` opens
 completion/documentation. Colorful-menu gives LSP labels and type details Treesitter
@@ -121,8 +140,11 @@ documentation use rounded borders, with documentation
 opening after 250 ms. Command-line completion retains Neovim's configured `wildmode`.
 
 Navigation uses the current file's Git root, falling back to the working directory,
-without changing Neovim's cwd. Hidden files are included; ignore rules are respected.
-Snacks explorer replaces netrw when opening a directory. Picker/explorer-local
+without changing Neovim's cwd. Telescope handles file/search/help/LSP pickers, using
+the native FZF sorter. Hidden files are included; ignore rules are respected and
+`.git` contents are excluded. nvim-tree replaces netrw when opening a directory and
+shows a sidebar with hidden files visible and Git-ignored files filtered. LazyGit
+opens in a floating terminal at the same project root. Picker/explorer-local
 mappings remain the upstream defaults, available through their help controls.
 
 ## Keymaps
@@ -146,7 +168,7 @@ noted. LSP and Git mappings attach to buffers when their features are available.
 | `<Space>cd` | Diagnostic details |
 | `<Space>cf` | Format buffer or visual selection |
 | `<Space>ff` / `<Space>fF` | Files: project / cwd |
-| `<Space>fb` / `<Space>fr` | Buffers / recent files |
+| `<Space>fb` / `<Space>fo` | Buffers / recent files |
 | `<Space>sg` / `<Space>sG` | Live grep: project / cwd |
 | `<Space>sw` | Search word or visual selection |
 | `<Space>sh` / `<Space>sk` | Help / keymaps |
@@ -161,15 +183,17 @@ noted. LSP and Git mappings attach to buffers when their features are available.
 | `<Space>ud` / `<Space>uh` | Toggle diagnostics / supported inlay hints |
 | `<Space>?` | Show buffer-local keymaps |
 
-LSP navigation uses Snacks pickers, jumping directly when there is one result.
+LSP navigation uses Telescope pickers, jumping directly when there is one location.
+Declarations (`gD`) use native LSP navigation; workspace symbols search dynamically.
 Continuous inline Git blame is disabled; use the explicit blame mapping.
 
 ## Extending and maintenance
 
 Add a spec to an existing `lua/plugins/` file or a new file returning a spec table;
 lazy.nvim imports it automatically. Use `opts` for settings and `event`, `ft`, `cmd`,
-or `keys` when lazy loading is supported. Mason, Snacks, and Treesitter initialize
-at startup; LSP and Git attach when files open; the UI loads after startup.
+or `keys` when lazy loading is supported. Mason, nvim-tree, and Treesitter initialize
+at startup; indent guides, LSP, and Git load when files open; Telescope and LazyGit
+load on use, and the remaining UI loads after startup.
 
 Add a server to the `servers` list in `lua/plugins/lsp.lua`, then put overrides in
 `after/lsp/<server>.lua`. Add formatters in `lua/plugins/formatting.lua` and their
@@ -181,7 +205,7 @@ settings. Append cleanup to `b:undo_ftplugin` for settings that need resetting w
 a buffer changes filetype.
 
 Use `:Lazy` for plugins, `:Mason` for tools, `:ConformInfo` for formatting, and
-`:checkhealth vim.lsp snacks nvim-treesitter blink.cmp which-key` for diagnostics.
+`:checkhealth vim.lsp telescope nvim-tree nvim-treesitter blink.cmp which-key` for diagnostics.
 After intentional plugin updates, commit `lazy-lock.json`; `:Lazy restore` returns
 to locked revisions. Mason tools and compiled parsers have separate versions and
 are not pinned by lazy.nvim's lockfile. Treesitter's build hook runs `:TSUpdate`

@@ -6,6 +6,7 @@ return {
     dependencies = { "catppuccin", "nvim-tree/nvim-web-devicons" },
     opts = function()
       local colors = require("catppuccin.palettes").get_palette("mocha")
+      local statusline = require("config.statusline")
       return {
         options = {
           theme = "catppuccin-mocha",
@@ -17,7 +18,15 @@ return {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = {
-            { "filename", path = 1, color = { fg = colors.mantle, bg = colors.maroon } },
+            {
+              "filename",
+              path = 1,
+              color = { fg = colors.mantle, bg = colors.maroon },
+              separator = "",
+            },
+            { "%=", cond = statusline.active, padding = 0, separator = "" },
+            { statusline.search, color = { fg = colors.yellow, gui = "bold" }, separator = "" },
+            { statusline.recording, color = { fg = colors.red, gui = "bold" }, separator = "" },
           },
           lualine_x = { "filetype" },
           lualine_y = { "progress" },
@@ -28,6 +37,7 @@ return {
     end,
     config = function(_, opts)
       require("lualine").setup(opts)
+      require("config.statusline").setup()
       vim.opt.showmode = false
     end,
   },

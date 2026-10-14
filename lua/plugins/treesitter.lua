@@ -7,7 +7,6 @@ return {
     dependencies = { "mason-org/mason.nvim" },
     opts = {
       parsers = {
-        "regex", -- Syntax highlighting in Snacks search prompts.
         "lua",
         "luadoc",
         "vim",

@@ -32,6 +32,8 @@ lua/config/statusline.lua  Search count and macro recording indicators
 lua/plugins/lsp.lua        LSP servers, Mason, and mason-lspconfig
 lua/plugins/completion.lua Blink completion
 lua/plugins/editing.lua    Automatic pairing and rainbow bracket highlighting
+lua/plugins/hover.lua      Formatted LSP hover documentation
+lua/plugins/code_actions.lua Telescope code actions with diff previews
 lua/plugins/treesitter.lua Parser selection
 lua/plugins/indent.lua     Blink indent guides and scope highlighting
 lua/plugins/telescope.lua  Telescope pickers and native FZF sorting
@@ -82,7 +84,7 @@ Manual formatting remains available when format-on-save is disabled. StyLua and
 Oxc respect project configuration; goimports formats code and updates imports.
 
 Treesitter uses its current `main` API, with native highlighting for Lua, Vim/help,
-queries, JavaScript, TypeScript/TSX, and Go/module files. Highlighting starts when a
+queries, Markdown, JavaScript, TypeScript/TSX, and Go/module files. Highlighting starts when a
 parser is available, including after the initial installation. Treesitter
 indentation is disabled; native filetype indentation and manual folding remain.
 
@@ -113,6 +115,8 @@ indentation is disabled; native filetype indentation and manual folding remain.
   Updates during insert mode and inlay hints are disabled initially.
 - Catppuccin Mocha supplies a solid dark background, colorful syntax and plugin UI,
   brighter lavender comments, bold keywords/functions/types, and terminal colors.
+  Popup interiors and border cells share the editor background, keeping rounded
+  purple outlines from appearing inside a separate dark rectangle.
 - nvim-web-devicons supplies colored file icons for Telescope, nvim-tree,
   lualine, and which-key.
 - Lualine shows mode, branch, changes, diagnostics, filename, filetype, and position
@@ -139,6 +143,18 @@ syntax colors; buffer/path labels use their completion-kind colors. Completion a
 documentation use rounded borders, with documentation
 opening after 250 ms. Command-line completion retains Neovim's configured `wildmode`.
 
+Signature help appears automatically on LSP trigger characters such as `(` and
+updates as arguments change. The rounded popup includes parameter documentation
+and highlights the active parameter; `Ctrl-k` in insert mode toggles it.
+`Shift-K` (`K`) opens formatted hover documentation through pretty_hover, with
+wrapping and a rounded border. Press `K` again to focus the popup, scroll with
+normal movement keys, and press `q` to close it.
+
+`gra` opens code actions in a Telescope picker with a diff preview above the action
+list. Type to filter, use `Ctrl-n/p` to move between actions, and Enter to apply the
+selected action. Escape cancels the picker. Visual selections use
+the same mapping. Actions implemented only as server commands may lack a preview.
+
 Navigation uses the current file's Git root, falling back to the working directory,
 without changing Neovim's cwd. Telescope handles file/search/help/LSP pickers, using
 the native FZF sorter. Hidden files are included; ignore rules are respected and
@@ -163,7 +179,8 @@ noted. LSP and Git mappings attach to buffers when their features are available.
 | `<Space>cm` / `<Space>cl` | Mason / LSP information |
 | `gd` / `gD` | Definition / declaration |
 | `grr` / `gri` / `grt` | References / implementations / type definitions |
-| `grn` / `gra` / `K` | Rename / code actions / hover |
+| `grn` / `gra` / `K` (`Shift-K`) | Rename / code actions / formatted hover |
+| `<C-k>` (insert) | Show/hide signature help |
 | `[d` / `]d` | Previous / next diagnostic (native mappings) |
 | `<Space>cd` | Diagnostic details |
 | `<Space>cf` | Format buffer or visual selection |

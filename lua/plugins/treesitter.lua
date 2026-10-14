@@ -12,6 +12,8 @@ return {
         "vim",
         "vimdoc",
         "query",
+        "markdown", -- Render hover and signature documentation with syntax colors.
+        "markdown_inline",
         "javascript",
         "typescript",
         "tsx",

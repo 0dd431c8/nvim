@@ -50,6 +50,10 @@ return {
       },
       sources = { default = { "lsp", "path", "snippets", "buffer" } },
       snippets = { preset = "default" },
+      signature = {
+        enabled = true,
+        window = { border = "rounded", max_width = 80, max_height = 12, show_documentation = true },
+      },
       fuzzy = { implementation = "prefer_rust_with_warning" },
       cmdline = { enabled = false },
       term = { enabled = false },

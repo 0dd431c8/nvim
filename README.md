@@ -29,6 +29,7 @@ lua/config/treesitter.lua  Parser installation and native highlighting
 lua/config/root.lua        Navigation root helper
 lua/config/rainbow.lua     Shared rainbow color cycle
 lua/config/statusline.lua  Search count and macro recording indicators
+lua/config/project_diagnostics.lua Go module checks including unopened files
 lua/plugins/lsp.lua        LSP servers, Mason, and mason-lspconfig
 lua/plugins/completion.lua Blink completion
 lua/plugins/editing.lua    Automatic pairing and rainbow bracket highlighting
@@ -59,10 +60,10 @@ There is no distribution or preset configuration dependency.
 | --- | --- | --- |
 | Lua | `lua_ls` | StyLua |
 | TypeScript / JavaScript / JSX / TSX | `ts_ls`, plus `oxlint` in Oxc projects | oxfmt |
-| Go | `gopls` | goimports |
+| Go | `gopls`, `golangci_lint_ls` | goimports |
 
 Mason automatically installs the declared language servers, StyLua, goimports,
-oxfmt, and the Tree-sitter CLI in Neovim's data directory. Only servers listed in
+golangci-lint, oxfmt, and the Tree-sitter CLI in Neovim's data directory. Only servers listed in
 `lua/plugins/lsp.lua` are automatically enabled; unrelated existing Mason packages
 stay inactive.
 
@@ -77,6 +78,18 @@ Oxc. Both the Oxlint LSP and Conform's oxfmt formatter prefer project-local
 `node_modules/.bin` executables, with Mason executables available as fallbacks.
 Lint fixes are explicit code actions; formatting on save runs oxfmt. Prettier and
 ESLint are not configured.
+
+Go uses gopls for type errors, navigation, and interactive analysis, with
+golangci-lint-langserver reporting lint diagnostics when Go files open or are saved.
+golangci-lint respects the project's `.golangci.*` configuration; its default
+linters include `errcheck` for ignored errors. If a project overrides the enabled
+linters, include `errcheck` there. Package compilation errors can prevent lint
+analysis from completing. `<Space>sd` runs golangci-lint across all packages in the
+current Go module and opens a Telescope report, including unopened files. This
+checks saved files, respects project lint configuration, and leaves buffers and
+quickfix lists unchanged. `<Space>sD` shows live diagnostics for the current buffer.
+For other languages, `<Space>sd` lists diagnostics already reported by the LSP;
+it does not force a full project check.
 
 Formatting runs synchronously before save with a 1-second timeout. Conform prefers
 the declared formatter and falls back to LSP formatting when it is unavailable.
@@ -159,7 +172,8 @@ Navigation uses the current file's Git root, falling back to the working directo
 without changing Neovim's cwd. Telescope handles file/search/help/LSP pickers, using
 the native FZF sorter. Hidden files are included; ignore rules are respected and
 `.git` contents are excluded. nvim-tree replaces netrw when opening a directory and
-shows a sidebar with hidden files visible and Git-ignored files filtered. LazyGit
+shows a sidebar with hidden files visible and Git-ignored files filtered.
+`<Space>e` expands the tree to reveal and select the active file. LazyGit
 opens in a floating terminal at the same project root. Picker/explorer-local
 mappings remain the upstream defaults, available through their help controls.
 
@@ -188,9 +202,10 @@ noted. LSP and Git mappings attach to buffers when their features are available.
 | `<Space>fb` / `<Space>fo` | Buffers / recent files |
 | `<Space>sg` / `<Space>sG` | Live grep: project / cwd |
 | `<Space>sw` | Search word or visual selection |
+| `<Space>sd` / `<Space>sD` | Go module check (otherwise reported project diagnostics) / current buffer |
 | `<Space>sh` / `<Space>sk` | Help / keymaps |
 | `<Space>ss` / `<Space>sS` | Document / workspace symbols |
-| `<Space>e` / `<Space>E` | Explorer: project / cwd |
+| `<Space>e` / `<Space>E` | Reveal active file in project explorer / explorer in cwd |
 | `<Space>gg` | LazyGit |
 | `[c` / `]c` | Previous / next Git hunk; native behavior in diff windows |
 | `<Space>hp` / `<Space>hs` / `<Space>hr` | Preview / stage or unstage / reset hunk |

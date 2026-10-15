@@ -6,7 +6,7 @@ return {
     opts = { ui = { border = "rounded" } },
     config = function(_, opts)
       require("mason").setup(opts)
-      require("config.mason").ensure_installed({ "stylua", "goimports", "oxfmt" })
+      require("config.mason").ensure_installed({ "stylua", "goimports", "golangci-lint", "oxfmt" })
     end,
     keys = {
       { "<leader>cm", "<cmd>Mason<CR>", desc = "Manage language tools" },
@@ -20,7 +20,7 @@ return {
       "mason-org/mason-lspconfig.nvim",
       "saghen/blink.cmp",
     },
-    opts = { servers = { "lua_ls", "ts_ls", "gopls", "oxlint" } },
+    opts = { servers = { "lua_ls", "ts_ls", "gopls", "golangci_lint_ls", "oxlint" } },
     config = function(_, opts)
       require("config.lsp").setup(opts)
     end,

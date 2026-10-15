@@ -21,9 +21,20 @@ return {
       {
         "<leader>e",
         function()
-          require("nvim-tree.api").tree.open({ path = root() })
+          local tree = require("nvim-tree.api").tree
+          if vim.bo.filetype == "NvimTree" then
+            tree.focus()
+            return
+          end
+          local buf = vim.api.nvim_get_current_buf()
+          local path = root()
+          tree.open({ path = path })
+          if require("nvim-tree.core").get_cwd() ~= path then
+            tree.change_root(path)
+          end
+          tree.find_file({ buf = buf, focus = true })
         end,
-        desc = "Project explorer",
+        desc = "Reveal active file in project explorer",
       },
       {
         "<leader>E",

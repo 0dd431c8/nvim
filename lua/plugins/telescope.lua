@@ -103,6 +103,20 @@ return {
         desc = "Search word or selection",
       },
       {
+        "<leader>sd",
+        function()
+          require("config.project_diagnostics").show()
+        end,
+        desc = "Project diagnostics",
+      },
+      {
+        "<leader>sD",
+        function()
+          require("telescope.builtin").diagnostics({ bufnr = 0 })
+        end,
+        desc = "Buffer diagnostics",
+      },
+      {
         "<leader>sh",
         function()
           require("telescope.builtin").help_tags()

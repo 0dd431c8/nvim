@@ -122,6 +122,9 @@ indentation is disabled; native filetype indentation and manual folding remain.
   `CursorHold` idle interval is 250 ms.
 - Code does not wrap. Text, Markdown, Git commits, plain TeX, and Typst wrap at
   word boundaries with indentation on continuation lines.
+- Yanks, deletes, and pastes use the system clipboard by default. Use `ggVGy` to
+  copy the entire buffer, or select text and press `y` to copy a selection.
+  On macOS, Neovim uses the built-in `pbcopy` and `pbpaste` tools.
 - Yanks briefly highlight copied text. Reopened regular files restore their last
   cursor position. Focus gain and terminal close/leave check for external changes.
 - Diagnostics use signs and underlines, inline warnings/errors, and bordered floats.

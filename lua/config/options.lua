@@ -11,6 +11,7 @@ opt.shiftround = true
 opt.smartindent = true
 opt.undofile = true
 opt.confirm = true
+opt.clipboard = "unnamedplus" -- Use the system clipboard for default yank, delete, and put.
 
 -- Completion and timing
 opt.completeopt = { "menu", "menuone", "noselect", "popup" }

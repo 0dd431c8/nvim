@@ -214,6 +214,10 @@ Insert-mode navigation falls back to Blink's default actions while completion is
 | `<C-k>` (insert) | Show/hide signature help |
 | `[d` / `]d` | Previous / next diagnostic (native mappings) |
 | `<Space>cd` | Diagnostic details |
+| `<Space>xq` / `<Space>xl` | Toggle editable quickfix / location list (Quicker) |
+| `<Space>xx` / `<Space>xX` | Toggle reported diagnostics / buffer diagnostics (Trouble) |
+| `<Space>xs` / `<Space>xr` | Toggle symbols / LSP results (Trouble) |
+| `<Space>xQ` / `<Space>xL` | Toggle quickfix / location list (Trouble) |
 | `<Space>cf` | Format buffer or visual selection |
 | `<Space>ff` / `<Space>fF` | Files: project / cwd |
 | `<Space>fb` / `<Space>fo` | Buffers / recent files |
@@ -242,6 +246,12 @@ with forward lookahead when the cursor is before an object. Availability depends
 the filetype's parser and textobject queries.
 
 Continuous inline Git blame is disabled; use the explicit blame mapping.
+
+Quicker enhances native quickfix and location lists. Inside a list, `>` expands
+context and `<` collapses it. Edit result text and use `:w` to apply changes;
+previously unmodified source buffers are also saved. Trouble provides separate,
+read-only list views; press `?` inside Trouble for its local mappings.
+Autotag closes tags and renames their matching partners in HTML, JSX, and TSX.
 
 ## Extending and maintenance
 

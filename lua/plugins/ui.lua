@@ -55,6 +55,7 @@ return {
         { "<leader>h", group = "Hunks" },
         { "<leader>s", group = "Search" },
         { "<leader>u", group = "Toggles" },
+        { "<leader>x", group = "Lists and diagnostics" },
       },
     },
     keys = {

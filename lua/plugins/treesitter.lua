@@ -17,6 +17,7 @@ return {
         "javascript",
         "typescript",
         "tsx",
+        "html",
         "go",
         "gomod",
         "gosum",

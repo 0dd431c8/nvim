@@ -184,10 +184,14 @@ mappings remain the upstream defaults, available through their help controls.
 
 Space is the leader; backslash is the local leader. Mappings are normal-mode unless
 noted. LSP and Git mappings attach to buffers when their features are available.
+Insert-mode navigation falls back to Blink's default actions while completion is open.
 
 | Key | Action |
 | --- | --- |
 | `<C-s>` (normal/insert/visual/select) | Save buffer |
+| `<C-a>` / `<C-e>` (insert) | Move to line start / end |
+| `<C-n>` / `<C-p>` (insert) | Move to next / previous line |
+| `<C-b>` / `<C-f>` (insert) | Move back / forward one character |
 | `<Esc>` | Clear search highlighting |
 | `<C-h/j/k/l>` | Focus the adjacent window |
 | `<Space>-` / `<Space>\|` | Split below / right |

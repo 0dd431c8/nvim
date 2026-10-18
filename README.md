@@ -193,6 +193,10 @@ Insert-mode navigation falls back to Blink's default actions while completion is
 | `<C-n>` / `<C-p>` (insert) | Move to next / previous line |
 | `<C-b>` / `<C-f>` (insert) | Move back / forward one character |
 | `<Esc>` | Clear search highlighting |
+| `s` (normal/visual/operator-pending) | Flash jump: type target text, then its label |
+| `S` (normal/visual/operator-pending) | Flash Treesitter selection |
+| `f` / `F` / `t` / `T` | Flash character motions; repeat with `f/F` or `t/T`, and `;` / `,` |
+| `/` / `?` | Search with Flash labels to jump directly to a match |
 | `<C-h/j/k/l>` | Focus the adjacent window |
 | `<Space>-` / `<Space>\|` | Split below / right |
 | `<` / `>` (visual) | Adjust indentation and keep the selection |

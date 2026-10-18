@@ -13,6 +13,12 @@ opt.undofile = true
 opt.confirm = true
 opt.clipboard = "unnamedplus" -- Use the system clipboard for default yank, delete, and put.
 
+-- Native Treesitter folds; keep code expanded until explicitly folded.
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+
 -- Completion and timing
 opt.completeopt = { "menu", "menuone", "noselect", "popup" }
 opt.wildmode = "longest:full,full"

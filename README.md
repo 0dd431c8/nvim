@@ -99,7 +99,10 @@ Oxc respect project configuration; goimports formats code and updates imports.
 Treesitter uses its current `main` API, with native highlighting for Lua, Vim/help,
 queries, Markdown, JavaScript, TypeScript/TSX, and Go/module files. Highlighting starts when a
 parser is available, including after the initial installation. Treesitter
-indentation is disabled; native filetype indentation and manual folding remain.
+indentation is disabled; native filetype indentation remains. Native Treesitter
+folding is enabled, with folds open initially. Use `zc` / `zo` to close / open a
+fold, `za` to toggle it, and `zM` / `zR` to close / open all folds. Automatic folds
+require an installed parser and fold queries for the filetype.
 
 ## Editor behavior
 

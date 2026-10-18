@@ -197,6 +197,12 @@ Insert-mode navigation falls back to Blink's default actions while completion is
 | `S` (normal/visual/operator-pending) | Flash Treesitter selection |
 | `f` / `F` / `t` / `T` | Flash character motions; repeat with `f/F` or `t/T`, and `;` / `,` |
 | `/` / `?` | Search with Flash labels to jump directly to a match |
+| `%` / `g%` | Matchup: next / previous matching delimiter or keyword |
+| `[%` / `]%` | Matchup: enclosing block start / end |
+| `af` / `if` (visual/operator-pending) | Select a function / its body |
+| `aa` / `ia` (visual/operator-pending) | Select an argument with separator / argument contents |
+| `]f` / `[f` (normal/visual/operator-pending) | Next / previous function start |
+| `]F` / `[F` (normal/visual/operator-pending) | Next / previous function end |
 | `<C-h/j/k/l>` | Focus the adjacent window |
 | `<Space>-` / `<Space>\|` | Split below / right |
 | `<` / `>` (visual) | Adjust indentation and keep the selection |
@@ -228,6 +234,13 @@ Insert-mode navigation falls back to Blink's default actions while completion is
 
 LSP navigation uses Telescope pickers, jumping directly when there is one location.
 Declarations (`gD`) use native LSP navigation; workspace symbols search dynamically.
+
+Treesitter context keeps up to three lines of enclosing code headers visible while scrolling.
+Use `:TSContext toggle` to toggle it. Treesitter textobjects support commands such as
+`daf` (delete a function), `yif` (copy its body), and `cia` (change an argument),
+with forward lookahead when the cursor is before an object. Availability depends on
+the filetype's parser and textobject queries.
+
 Continuous inline Git blame is disabled; use the explicit blame mapping.
 
 ## Extending and maintenance

@@ -49,6 +49,7 @@ return {
       preset = "classic",
       delay = 300,
       spec = {
+        { "<leader>b", group = "Buffers" },
         { "<leader>c", group = "Code" },
         { "<leader>f", group = "Files" },
         { "<leader>g", group = "Git" },

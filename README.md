@@ -43,6 +43,7 @@ lua/plugins/lazygit.lua    LazyGit floating terminal
 lua/plugins/formatting.lua Conform formatters and save behavior
 lua/plugins/git.lua        Gitsigns and buffer-local hunk mappings
 lua/plugins/ui.lua         Lualine, which-key, and file icons
+lua/plugins/bufferline.lua Buffer tabs, diagnostics, and navigation
 lua/plugins/theme.lua      Catppuccin Mocha and palette/highlight customizations
 after/lsp/*.lua            Overrides merged with nvim-lspconfig server defaults
 after/ftplugin/*.lua       Local display settings for prose
@@ -137,7 +138,11 @@ require an installed parser and fold queries for the filetype.
   Popup interiors and border cells share the editor background, keeping rounded
   purple outlines from appearing inside a separate dark rectangle.
 - nvim-web-devicons supplies colored file icons for Telescope, nvim-tree,
-  lualine, and which-key.
+  lualine, Bufferline, and which-key.
+- Bufferline shows open buffers with Catppuccin colors, thin separators, file icons,
+  modified markers, and LSP diagnostic counts. The file explorer has a matching
+  header offset. Close buttons are hidden; right-click or `<Space>bd` deletes a
+  buffer with confirmation for unsaved changes. Pinned buffers stay at the left.
 - Lualine shows mode, branch, changes, diagnostics, filename, filetype, and position
   in a global statusline; the duplicate built-in mode message is hidden after load.
   Its Mocha colors use a lavender normal-mode badge, maroon filename, flamingo
@@ -210,6 +215,10 @@ Insert-mode navigation falls back to Blink's default actions while completion is
 | `<Space>-` / `<Space>\|` | Split below / right |
 | `<` / `>` (visual) | Adjust indentation and keep the selection |
 | `<Space>l` | lazy.nvim |
+| `[b` / `]b` | Previous / next buffer |
+| `<Tab>` / `<S-Tab>` (normal) | Next / previous buffer |
+| `[B` / `]B` | Move buffer left / right |
+| `<Space>bb` / `<Space>bp` / `<Space>bd` | Pick / pin or unpin / delete buffer |
 | `<Space>cm` / `<Space>cl` | Mason / LSP information |
 | `gd` / `gD` | Definition / declaration |
 | `grr` / `gri` / `grt` | References / implementations / type definitions |

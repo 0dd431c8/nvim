@@ -27,6 +27,7 @@ lua/config/lsp.lua         Native LSP integration, diagnostics, attach mappings
 lua/config/mason.lua       Installation helper for non-LSP tools
 lua/config/treesitter.lua  Parser installation and native highlighting
 lua/config/root.lua        Navigation root helper
+lua/config/workspace_symbols.lua Project-scoped dynamic workspace symbols
 lua/config/rainbow.lua     Shared rainbow color cycle
 lua/config/statusline.lua  Search count and macro recording indicators
 lua/config/project_diagnostics.lua Go module checks including unopened files
@@ -249,7 +250,9 @@ Insert-mode navigation falls back to Blink's default actions while completion is
 | `<Space>?` | Show buffer-local keymaps |
 
 LSP navigation uses Telescope pickers, jumping directly when there is one location.
-Declarations (`gD`) use native LSP navigation; workspace symbols search dynamically.
+Declarations (`gD`) use native LSP navigation; workspace symbols search dynamically
+and only include files under the current project root (Git root, falling back to
+cwd). Symbols from external dependencies and toolchains are excluded.
 
 Treesitter context keeps up to three lines of enclosing code headers visible while scrolling.
 Use `:TSContext toggle` to toggle it. Treesitter textobjects support commands such as
